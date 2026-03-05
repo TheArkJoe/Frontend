@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* ─── Light Theme ─── */
+:root {
+  --color-primary: #1abc9c;
+  --color-primary-hover: #16a085;
+  --color-primary-light: #48d1b5;
+  --color-bg: #fafaf9;
+  --color-bg-secondary: #f5f5f4;
+  --color-bg-tertiary: #eeeceb;
+  --color-text: #1c1917;
+  --color-text-secondary: #57534e;
+  --color-text-muted: #a8a29e;
+  --color-border: #e7e5e4;
+  --color-card: #ffffff;
+  --color-card-hover: #f5f5f4;
+  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-glow: 0 0 40px rgba(26, 188, 156, 0.08);
+}
+
+/* ─── Dark Theme ─── */
+[data-theme="dark"] {
+  --color-primary: #1abc9c;
+  --color-primary-hover: #16a085;
+  --color-primary-light: #48d1b5;
+  --color-bg: #0a0a0c;
+  --color-bg-secondary: #111114;
+  --color-bg-tertiary: #1a1a1e;
+  --color-text: #f5f5f4;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #71717a;
+  --color-border: #27272a;
+  --color-card: #141417;
+  --color-card-hover: #1a1a1e;
+  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 40px rgba(26, 188, 156, 0.1);
+}
+
+/* ─── Reset & Base ─── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted);
+  border-radius: 10px;
+}
+
+/* ─── Form Focus States ─── */
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary) !important;
+  outline: none;
+}
+
+/* ─── Utilities ─── */
+.text-gradient {
+  background: linear-gradient(135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Responsive Navbar ─── */
+.desktop-nav {
+  display: flex;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+.mobile-only {
+  display: none !important;
+}
+
+.mobile-menu {
+  display: block;
+}
+
+@media (max-width: 1023px) {
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* ─── Responsive Programs Grid ─── */
+@media (max-width: 768px) {
+  #programs>div>div:last-child {
+    grid-template-columns: 1fr !important;
+  }
+}
