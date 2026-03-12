@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
+import mainPage from '../../assets/MainPage.jpeg';
+
 export default function Hero() {
   const { t } = useLanguage();
   const badges = [t.hero.badge1, t.hero.badge2, t.hero.badge3, t.hero.badge4];
 
   return (
     <section
+      id="hero"
       style={{
         position: 'relative',
         minHeight: '100vh',
@@ -25,7 +28,7 @@ export default function Hero() {
           inset: 0,
           width: '100%',
           height: '100%',
-          backgroundImage: 'url(/hero-bg.png)',
+          backgroundImage: `url(${mainPage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center 20%',
           backgroundRepeat: 'no-repeat',
@@ -146,7 +149,7 @@ export default function Hero() {
             gap: '16px',
           }}
         >
-          <a href="#programs" style={{ textDecoration: 'none' }}>
+          <a href="#newsletter" style={{ textDecoration: 'none' }}>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -155,7 +158,7 @@ export default function Hero() {
                 borderRadius: '10px',
                 fontSize: '15px',
                 fontWeight: 600,
-                color: '#fff',
+                color: '#ffffff',
                 border: 'none',
                 cursor: 'pointer',
                 display: 'inline-flex',

@@ -13,7 +13,7 @@ export default function SectionTitle({
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5 }}
       style={{
-        textAlign: 'center',
+        textAlign: center ? 'center' : 'left',
         marginBottom: '48px',
       }}
     >
@@ -47,7 +47,7 @@ export default function SectionTitle({
         <p
           style={{
             maxWidth: '480px',
-            margin: '0 auto',
+            margin: center ? '0 auto' : 0,
             fontSize: '15px',
             lineHeight: 1.7,
             color: 'var(--color-text-secondary)',

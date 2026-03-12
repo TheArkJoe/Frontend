@@ -47,16 +47,16 @@ export default function Footer() {
                 color: 'var(--color-text)',
               }}
             >
-              THE ARK
+              JOE
             </span>
             <p
               style={{
+                margin: 0,
                 fontSize: '14px',
                 color: 'var(--color-text-secondary)',
-                margin: 0,
               }}
             >
-              {t.footer.tagline}
+              © {new Date().getFullYear()} Joe. All rights reserved.
             </p>
           </div>
 
@@ -98,7 +98,7 @@ export default function Footer() {
             {t.footer.rights}
           </p>
         </div>
-      </div>
+        </div>
     </footer>
   );
 }

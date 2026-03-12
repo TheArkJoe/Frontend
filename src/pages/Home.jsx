@@ -14,9 +14,7 @@ export default function Home() {
       <About />
       <TrackRecord />
       <Journey />
-      <Programs />
-      <CalorieCalculatorPreview />
-      <Newsletter />
+      <Newsletter/>
       <FAQ />
     </>
   );

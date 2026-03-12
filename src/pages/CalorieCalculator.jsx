@@ -92,7 +92,7 @@ export default function CalorieCalculator() {
     <div style={{ minHeight: '100vh' }}>
 
       {/* ─── Page Content ─── */}
-      <section style={{ padding: '120px 24px 96px' }}>
+      <section style={{ padding: '120px 24px 96px' }} id='calculator'>
         <div style={{ maxWidth: '620px', margin: '0 auto' }}>
 
           {/* Back link */}
@@ -248,19 +248,7 @@ export default function CalorieCalculator() {
                 />
               </div>
 
-              {/* Activity Level */}
-              <div>
-                <label style={labelStyle}>{c.activityLevel}</label>
-                <select
-                  value={form.activity}
-                  onChange={(e) => update('activity', parseInt(e.target.value))}
-                  style={selectStyle}
-                >
-                  {c.activityOptions.map((opt, i) => (
-                    <option key={i} value={i}>{opt}</option>
-                  ))}
-                </select>
-              </div>
+              
 
               {/* Goal */}
               <div>

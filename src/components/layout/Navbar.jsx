@@ -26,8 +26,8 @@ export default function Navbar() {
     { label: t.nav.about, href: '/#about' },
     { label: t.nav.achievements, href: '/#achievements' },
     { label: t.nav.journey, href: '/#journey' },
-    { label: t.nav.programs, href: '/#programs' },
-    { label: t.nav.apply, href: '/#programs' },
+    //{ label: t.nav.programs, href: '/#programs' },
+    //{ label: t.nav.apply, href: '/#programs' },
     { label: t.nav.faq, href: '/#faq' },
   ];
 
@@ -87,7 +87,7 @@ export default function Navbar() {
         }}
       >
         {/* Logo */}
-        <Link to="/" style={{ textDecoration: 'none' }}>
+        <a href="#hero" style={{ textDecoration: 'none' }}>
           <span
             style={{
               fontSize: '1.15rem',
@@ -96,9 +96,9 @@ export default function Navbar() {
               color: scrolled ? 'var(--color-text)' : '#fff',
             }}
           >
-            THE ARK
+            JOE
           </span>
-        </Link>
+        </a>
 
         {/* Desktop Links */}
         <div
