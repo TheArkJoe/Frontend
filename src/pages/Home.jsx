@@ -14,6 +14,7 @@ export default function Home() {
       <About />
       <TrackRecord />
       <Journey />
+      <Programs />
       <Newsletter/>
       <FAQ />
     </>
