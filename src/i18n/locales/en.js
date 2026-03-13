@@ -46,12 +46,10 @@ const en = {
     label: 'TRACK RECORD',
     title: 'Performance Backed by Results',
     items: [
+      'Online Coaching Experience',
       'University Sprint Championship Medalist',
       'Founder of AUC Calisthenics Team',
-      '3+ Years Advanced Sprint Training',
-      '5+ Years Advanced Calisthenics Training',
-      'Online Coaching Experience',
-      'Athlete Development Focus',
+      '3+ Years Advanced Sprint and Calisthenics Training',
     ],
   },
 
