@@ -5,8 +5,8 @@ const en = {
     about: 'About',
     achievements: 'Achievements',
     journey: 'Journey',
-    //programs: 'Programs',
-    //apply: 'Apply',
+    programs: 'Programs',
+    apply: 'Apply',
     calculator: 'Calorie Calculator',
     faq: 'FAQ',
     applyNow: 'Apply Now',
@@ -35,8 +35,7 @@ const en = {
     p3: "I expanded into sprint specialization, competed in university sprint championships, and won multiple medals. Now I help serious athletes unlock the same results through structured, data-driven coaching.",
     cta: 'Train With Me',
     stats: [
-      { number: '5+', label: 'Years Training' },
-      { number: '3+', label: 'Years Sprinting' },
+      { number: '5+', label: 'Years Training and Sprinting' },
       { number: '50+', label: 'Athletes Coached' },
     ],
   },
@@ -49,7 +48,7 @@ const en = {
       'Online Coaching Experience',
       'University Sprint Championship Medalist',
       'Founder of AUC Calisthenics Team',
-      '3+ Years Advanced Sprint and Calisthenics Training',
+      '5+ Years Advanced Sprint and Calisthenics Training',
     ],
   },
 
@@ -77,11 +76,21 @@ const en = {
     label: 'PROGRAMS',
     title: 'Coaching Programs',
     mostPopular: 'Most Popular',
+    coverageFeatures: [
+      'Custom Training Plan',
+      'Personalized Nutrition Plan',
+      'Nutrition Starter Kit',
+      'Weekly check-ins and Reviews',
+      'Direct WhatsApp Coach Access',
+      'Bi-Weekly Strategy Calls',
+      'Educational Nutrition Guide',
+    ],
     tiers: [
       {
         badge: 'BASIC',
         name: 'Foundations',
         description: 'For beginners building strength and athletic base.',
+        includedCount: 4,
         features: [
           'Personalized monthly training plan',
           'Weekly check-ins',
@@ -95,6 +104,7 @@ const en = {
         name: 'Performance Athlete',
         description:
           'For serious athletes looking to improve sprint speed and strength-to-weight ratio.',
+        includedCount: 6,
         features: [
           'Custom sprint + calisthenics programming',
           'Bi-weekly performance calls',
@@ -109,6 +119,7 @@ const en = {
         badge: 'ELITE',
         name: 'Elite Performance',
         description: 'For competitive athletes demanding full optimization.',
+        includedCount: 7,
         features: [
           'Full performance periodization',
           'Weekly 1-on-1 coaching calls',
@@ -127,9 +138,30 @@ const en = {
     label: 'NEWSLETTER',
     title: 'An Advice a Day',
     subtitle:
-      'Subscribe and receive one daily piece of advice — training, mindset, nutrition — straight to your inbox.',
+      'One powerful insight a day.\n Two minutes to read.\n Delivered straight to your inbox.',
     placeholder: 'Enter your email',
-    cta: 'Subscribe',
+    ctaNewsletter: 'Apply for Newsletter',
+    ctaProgram: 'Apply for Program',
+    selector: {
+      program: 'Program',
+      newsletter: 'Newsletter',
+    },
+    messages: {
+      invalidEmail: 'Please enter a valid email.',
+      programSuccess: 'Application sent for program.',
+      newsletterSuccess: 'Application sent for newsletter.',
+      genericError: 'Could not submit right now. Try again.',
+      integrationMissing:
+        'Google Sheets integration is not configured yet. Add VITE_LEADS_ENDPOINT in your environment.',
+      wrongEndpoint:
+        'VITE_LEADS_ENDPOINT is invalid. Use your Apps Script Web App URL ending with /exec, not the sheet URL.',
+      endpointAuthError:
+        'Endpoint rejected the request. Check Apps Script deployment access and API key settings.',
+      endpointNetworkError:
+        'Could not reach the endpoint. Check internet access and ensure the endpoint URL is reachable.',
+      endpointInvalidResponse:
+        'Endpoint returned an unexpected response. Verify your Apps Script doPost handler and returned JSON.',
+    },
     disclaimer: 'No spam. Unsubscribe anytime.',
   },
 
@@ -188,32 +220,48 @@ const en = {
     title: 'Frequently Asked Questions',
     items: [
       {
-        q: 'Is this program suitable for beginners?',
-        a: 'Yes! The Foundations program is designed specifically for beginners who want to build a strong athletic base.',
+        q: 'Who is this coaching designed for?',
+        a: 'My coaching is designed for individuals who value high-level physical performance, structure, and long-term health. Most clients are professionals, entrepreneurs, and athletes who want a personalized system that fits into demanding schedules while delivering measurable results.',
       },
       {
-        q: 'Do I need gym access?',
-        a: 'Not necessarily. Many calisthenics exercises can be done with minimal equipment. However, gym access can help with sprint and advanced strength training.',
+        q: 'What makes your coaching different?',
+        a: 'This is not a generic fitness program. Every client receives a fully individualized system built around their goals, schedule, recovery capacity, and training history. My background in sprint performance and strength-to-weight training allows me to combine athletic development, strength training, and body composition strategies into one integrated approach.',
       },
       {
-        q: 'Is nutrition included?',
-        a: 'The Performance and Elite tiers include nutrition guidance. Use our free Calorie Calculator as a starting point!',
+        q: 'What kind of results do your clients achieve?',
+        a: 'Clients typically experience significant improvements in strength, physical performance, body composition, and overall energy levels. However, results depend on consistency and commitment. My role is to provide the strategy, structure, and accountability required to achieve high-level results.',
       },
       {
-        q: 'How soon will I see results?',
-        a: 'With consistent effort, most athletes see noticeable improvements within 4-6 weeks. Significant transformation takes 3-6 months.',
+        q: 'Is this suitable for beginners?',
+        a: 'Yes. Programs are tailored to each client’s level, whether they are new to training or already experienced. The focus is always on sustainable progress and long-term development.',
       },
       {
-        q: 'What if I get injured?',
-        a: 'Your program will be adjusted to accommodate recovery. Communication is key — we work around your situation.',
+        q: 'How does online coaching work?',
+        a: 'The process is structured and straightforward: initial assessment and consultation, personalized training system and nutrition guidance designed around your goals, weekly progress reviews and program adjustments upon need, and ongoing communication and performance feedback. This ensures the program evolves with your progress.',
       },
       {
-        q: 'Is sprint training safe?',
-        a: 'Yes, when programmed correctly. Proper warm-ups, progressions, and technique drills are built into every plan.',
+        q: 'Do I need access to a gym?',
+        a: 'Not necessarily. Programs can be designed for full gym environments, private studios, or minimal equipment depending on your setup and preferences.',
       },
       {
-        q: 'How is communication handled?',
-        a: 'Depending on your tier: email, WhatsApp, or direct 1-on-1 calls. You will always have a direct line to your coach.',
+        q: 'How much time do I need to commit?',
+        a: 'Most clients train between 3–5 sessions per week, each lasting approximately 45–75 minutes. The program is designed to fit into demanding professional schedules.',
+      },
+      {
+        q: 'Do you provide nutrition guidance?',
+        a: 'Yes. Clients receive practical nutrition guidance designed to support training performance, recovery, and body composition goals. The focus is on sustainable habits rather than restrictive dieting.',
+      },
+      {
+        q: 'How does communication work during coaching?',
+        a: 'Clients receive bi-weekly structured check-ins where progress, training performance, recovery, and adjustments are reviewed. Outside of those check-ins, clients are welcome to reach out at any time for questions, feedback, or clarification. I respond as promptly as possible to ensure momentum is never lost. If a deeper discussion is needed, clients may request a private call, which will be scheduled at the earliest available time. The goal is simple: consistent guidance and uninterrupted progress.',
+      },
+      {
+        q: 'What am I giving up?',
+        a: 'Commitment. This coaching works best for individuals who are prepared to take their physical development seriously. That means showing up consistently, following the structure, and communicating honestly during check-ins. You are not giving up flexibility or autonomy. The system is designed to integrate into demanding schedules. What you are committing to is a higher standard of discipline, accountability, and long-term progress.',
+      },
+      {
+        q: 'How do I get started?',
+        a: 'Prospective clients begin by completing the coaching application form. This helps determine whether the program is a strong fit for their goals and expectations. Qualified applicants will then be invited to schedule a consultation.',
       },
     ],
   },

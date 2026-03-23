@@ -5,6 +5,16 @@ import { useLanguage } from '../../context/LanguageContext';
 
 export default function Programs() {
   const { t } = useLanguage();
+  const coverageFeatures =
+    t.programs.coverageFeatures || [
+      'Custom Training Plan',
+      'Personalized Nutrition Plan',
+      'Nutrition Starter Kit',
+      'Weekly check-ins and Reviews',
+      'Direct WhatsApp Coach Access',
+      'Bi-Weekly Strategy Calls',
+      'Educational Nutrition Guide',
+    ];
 
   return (
     <section
@@ -116,7 +126,10 @@ export default function Programs() {
                   marginBottom: '28px',
                 }}
               >
-                {tier.features.map((feature, fi) => (
+                {coverageFeatures.map((feature, fi) => {
+                  const isIncluded = fi < (tier.includedCount ?? coverageFeatures.length);
+
+                  return (
                   <li
                     key={fi}
                     style={{
@@ -125,25 +138,44 @@ export default function Programs() {
                       gap: '10px',
                     }}
                   >
-                    <Check
-                      size={16}
-                      strokeWidth={2.5}
-                      style={{
-                        marginTop: '2px',
-                        flexShrink: 0,
-                        color: 'var(--color-primary)',
-                      }}
-                    />
+                    {isIncluded ? (
+                      <Check
+                        size={16}
+                        strokeWidth={2.5}
+                        style={{
+                          marginTop: '2px',
+                          flexShrink: 0,
+                          color: 'var(--color-primary)',
+                        }}
+                      />
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          width: '16px',
+                          height: '16px',
+                          marginTop: '2px',
+                          flexShrink: 0,
+                          borderRadius: '4px',
+                          border: '1.5px solid var(--color-border)',
+                          opacity: 0.8,
+                        }}
+                      />
+                    )}
                     <span
                       style={{
                         fontSize: '14px',
-                        color: 'var(--color-text-secondary)',
+                        color: isIncluded
+                          ? 'var(--color-text-secondary)'
+                          : 'var(--color-text-secondary)',
+                        opacity: isIncluded ? 1 : 0.55,
                       }}
                     >
                       {feature}
                     </span>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
 
               <motion.button

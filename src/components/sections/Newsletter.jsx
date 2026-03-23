@@ -3,89 +3,99 @@ import { motion } from 'framer-motion';
 import { Send } from 'lucide-react';
 import SectionTitle from '../ui/SectionTitle';
 import { useLanguage } from '../../context/LanguageContext';
-
-const NEWSLETTER_STORAGE_KEY = 'joe_newsletter_signups_v1';
-
-function saveNewsletterSignup(email) {
-  const trimmed = String(email || '').trim();
-  if (!trimmed) return { ok: false, reason: 'empty' };
-
-  const existing = (() => {
-    try {
-      const raw = localStorage.getItem(NEWSLETTER_STORAGE_KEY);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  })();
-
-  const next = [
-    {
-      email: trimmed,
-      createdAt: new Date().toISOString(),
-    },
-    ...existing,
-  ].slice(0, 1000);
-
-  try {
-    localStorage.setItem(NEWSLETTER_STORAGE_KEY, JSON.stringify(next));
-  } catch {
-    return { ok: false, reason: 'storage_failed' };
-  }
-
-  return { ok: true, count: next.length };
-}
-
-function downloadSignup(email) {
-  try {
-    const content = `Newsletter signup\nEmail: ${email}\nTime: ${new Date().toISOString()}\n`;
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `newsletter-signup-${Date.now()}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  } catch {
-    // ignore
-  }
-}
+import { createLeadSubmission } from '../../services/leads/createLeadSubmission';
 
 export default function Newsletter() {
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
+  const [leadType, setLeadType] = useState('newsletter');
   const [submitState, setSubmitState] = useState({ type: 'idle', message: '' });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const trimmed = email.trim();
 
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
     if (!isValid) {
-      setSubmitState({ type: 'error', message: 'Please enter a valid email.' });
+      setSubmitState({ type: 'error', message: t.newsletter.messages.invalidEmail });
       return;
     }
 
-    const res = saveNewsletterSignup(trimmed);
-    if (!res.ok) {
-      setSubmitState({ type: 'error', message: 'Could not save locally. Try again.' });
-      return;
+    setSubmitState({ type: 'loading', message: '' });
+
+    try {
+      await createLeadSubmission({
+        email: trimmed,
+        source: leadType,
+      });
+
+      setEmail('');
+      setSubmitState({
+        type: 'success',
+        message:
+          leadType === 'program'
+            ? t.newsletter.messages.programSuccess
+            : t.newsletter.messages.newsletterSuccess,
+      });
+    } catch (error) {
+      const errorCode = error?.code || error?.message || 'UNKNOWN';
+      console.error('Lead submission error', {
+        code: errorCode,
+        message: error?.message,
+        details: error?.details,
+        raw: error,
+      });
+
+      if (errorCode === 'GOOGLE_SHEETS_NOT_CONFIGURED') {
+        setSubmitState({
+          type: 'error',
+          message: t.newsletter.messages.integrationMissing,
+        });
+        return;
+      }
+
+      if (errorCode === 'GOOGLE_SHEETS_WRONG_ENDPOINT') {
+        setSubmitState({
+          type: 'error',
+          message: t.newsletter.messages.wrongEndpoint,
+        });
+        return;
+      }
+
+      if (errorCode === 'GOOGLE_SHEETS_AUTH_ERROR') {
+        setSubmitState({
+          type: 'error',
+          message: t.newsletter.messages.endpointAuthError,
+        });
+        return;
+      }
+
+      if (errorCode === 'GOOGLE_SHEETS_NETWORK_ERROR') {
+        setSubmitState({
+          type: 'error',
+          message: t.newsletter.messages.endpointNetworkError,
+        });
+        return;
+      }
+
+      if (errorCode === 'GOOGLE_SHEETS_INVALID_RESPONSE') {
+        setSubmitState({
+          type: 'error',
+          message: t.newsletter.messages.endpointInvalidResponse,
+        });
+        return;
+      }
+
+      const debugSuffix = import.meta.env.DEV ? ` [${errorCode}]` : '';
+      setSubmitState({
+        type: 'error',
+        message: `${t.newsletter.messages.genericError}${debugSuffix}`,
+      });
     }
-
-    console.log('[Newsletter signup]', { email: trimmed, total: res.count });
-
-    // “Creative local send”: save + download a tiny receipt file.
-    downloadSignup(trimmed);
-
-    setEmail('');
-    setSubmitState({
-      type: 'success',
-      message: `Saved locally (${res.count} total). Downloaded a receipt.`,
-    });
   };
+
+  const submitLabel =
+    leadType === 'program' ? t.newsletter.ctaProgram : t.newsletter.ctaNewsletter;
 
   return (
     <section
@@ -102,6 +112,46 @@ export default function Newsletter() {
           subtitle={t.newsletter.subtitle}
           center
         />
+
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '4px',
+            borderRadius: '999px',
+            border: '1px solid var(--color-border)',
+            background: 'var(--color-card)',
+            marginTop: '6px',
+          }}
+        >
+          {[
+            { value: 'program', label: t.newsletter.selector.program },
+            { value: 'newsletter', label: t.newsletter.selector.newsletter },
+          ].map((option) => {
+            const active = leadType === option.value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setLeadType(option.value)}
+                style={{
+                  border: 'none',
+                  borderRadius: '999px',
+                  padding: '8px 14px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  fontFamily: 'inherit',
+                  cursor: 'pointer',
+                  background: active ? 'var(--color-primary)' : 'transparent',
+                  color: active ? '#fff' : 'var(--color-text-secondary)',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
 
         <form
           onSubmit={handleSubmit}
@@ -147,9 +197,11 @@ export default function Newsletter() {
               background: 'var(--color-primary)',
               fontFamily: 'inherit',
               whiteSpace: 'nowrap',
+              opacity: submitState.type === 'loading' ? 0.85 : 1,
             }}
+            disabled={submitState.type === 'loading'}
           >
-            {t.newsletter.cta}
+            {submitLabel}
             <Send size={14} />
           </motion.button>
         </form>
