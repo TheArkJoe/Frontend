@@ -148,31 +148,43 @@ textarea:focus {
     scroll-padding-top: 72px;
   }
 
+  /* ── Hero ── */
   #hero {
-    min-height: 92vh !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
   }
 
-  #hero > div:first-child {
-    background-position: center 15% !important;
+  #hero>div:first-child {
+    background-position: center top !important;
+    transform: scale(1.15) translateY(8%) !important;
+    background-size: cover !important;
   }
 
   .hero-content {
-    padding: 116px 16px 72px !important;
+    padding: 130px 20px 80px !important;
   }
 
   .hero-title {
-    margin-bottom: 18px !important;
+    margin-bottom: 16px !important;
+    font-size: clamp(2rem, 8vw, 2.8rem) !important;
   }
 
   .hero-subtitle {
-    font-size: 0.95rem !important;
-    line-height: 1.65 !important;
-    margin-bottom: 24px !important;
+    font-size: 0.92rem !important;
+    line-height: 1.7 !important;
+    margin-bottom: 22px !important;
+    max-width: 340px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   .hero-badges {
-    gap: 8px 10px !important;
+    gap: 6px 8px !important;
     margin-bottom: 28px !important;
+  }
+
+  .hero-badges span {
+    font-size: 10px !important;
   }
 
   .hero-actions {
@@ -181,74 +193,154 @@ textarea:focus {
     gap: 10px !important;
   }
 
-  .hero-actions > a {
+  .hero-actions>a {
     width: 100%;
   }
 
-  .hero-actions > a > button {
+  .hero-actions>a>button {
     width: 100%;
     justify-content: center;
   }
 
+  /* ── Sections — shared spacing ── */
   #about,
   #achievements,
   #journey,
   #programs,
   #newsletter,
   #faq {
-    padding: 72px 16px !important;
+    padding: 64px 16px !important;
   }
 
+  /* ── Section titles ── */
+  #about h2,
+  #achievements h2,
+  #journey h2,
+  #programs h2,
+  #newsletter h2,
+  #faq h2 {
+    font-size: clamp(1.3rem, 5.5vw, 1.75rem) !important;
+  }
+
+  /* ── About ── */
   #about .about-wrap {
     flex-direction: column !important;
-    gap: 28px !important;
+    gap: 24px !important;
   }
 
   #about .about-photo {
     max-width: 100% !important;
+    border-radius: 18px !important;
+  }
+
+  #about .about-photo img {
+    border-radius: 18px !important;
   }
 
   #about .about-stats {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-    margin-top: 36px !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    margin-top: 28px !important;
+  }
+
+  #about .about-stats>div {
+    padding: 16px 8px !important;
+    border-radius: 10px !important;
+  }
+
+  #about .about-stats>div>div:first-child {
+    font-size: clamp(1.2rem, 5vw, 1.5rem) !important;
+  }
+
+  #about .about-stats>div>div:last-child {
+    font-size: 10px !important;
   }
 
   #about .about-content {
     text-align: left;
   }
 
-  #achievements .track-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+  #about .about-content p {
+    font-size: 14px !important;
+    line-height: 1.8 !important;
   }
 
-  #journey .journey-grid {
+  #about .about-content button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* ── Track Record / Achievements ── */
+  #achievements .track-grid {
     grid-template-columns: 1fr !important;
-    gap: 16px !important;
-    margin-top: 40px !important;
+    gap: 8px !important;
+  }
+
+  #achievements .track-grid>div {
+    padding: 10px 14px !important;
+  }
+
+  #achievements .track-grid span {
+    font-size: 13px !important;
+  }
+
+  /* ── Journey — 3×2 grid on mobile ── */
+  #journey .journey-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    margin-top: 36px !important;
+  }
+
+  #journey .journey-card {
+    border-radius: 14px !important;
   }
 
   #journey .journey-card img {
-    height: 220px !important;
+    height: 160px !important;
   }
 
   #journey .journey-caption {
-    font-size: 13px !important;
-    left: 14px !important;
-    right: 14px !important;
-    bottom: 12px !important;
+    font-size: 11px !important;
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+    line-height: 1.35 !important;
   }
 
+  /* Journey tagline spacing */
+  #journey>div>div:last-child {
+    margin-top: 48px !important;
+    padding-top: 36px !important;
+  }
+
+  #journey>div>div:last-child p {
+    font-size: 0.95rem !important;
+  }
+
+  /* ── Programs ── */
   .programs-grid,
-  #programs > div > div:last-child {
+  #programs>div>div:last-child {
     grid-template-columns: 1fr !important;
   }
 
   .program-card {
     padding: 22px !important;
+    border-radius: 18px !important;
   }
 
+  .program-card h3 {
+    font-size: 1.75rem !important;
+  }
+
+  .program-card p {
+    font-size: 14px !important;
+  }
+
+  .program-card ul li span {
+    font-size: 13px !important;
+  }
+
+  /* ── Newsletter ── */
   .newsletter-selector {
     width: 100%;
     justify-content: center;
@@ -265,15 +357,24 @@ textarea:focus {
     justify-content: center;
   }
 
+  .newsletter-form input {
+    font-size: 16px !important;
+    /* prevents iOS zoom on focus */
+  }
+
+  /* ── FAQ ── */
   .faq-question {
     padding: 16px !important;
     gap: 8px;
+    font-size: 14px !important;
   }
 
   .faq-answer {
     padding: 0 16px 16px !important;
+    font-size: 13px !important;
   }
 
+  /* ── Footer ── */
   .footer-top {
     flex-direction: column;
     align-items: flex-start !important;
@@ -285,6 +386,7 @@ textarea:focus {
     gap: 8px !important;
   }
 
+  /* ── Calculator page ── */
   #calculator {
     padding: 96px 16px 72px !important;
   }
@@ -329,12 +431,43 @@ textarea:focus {
 }
 
 @media (max-width: 420px) {
-  .hero-actions > a > button {
+  .hero-actions>a>button {
     padding: 13px 18px !important;
     font-size: 14px !important;
   }
 
+  /* Journey falls back to 1 column on very small screens */
+  #journey .journey-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  #journey .journey-card img {
+    height: 200px !important;
+  }
+
+  #journey .journey-caption {
+    font-size: 12px !important;
+  }
+
   .calculator-results-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  #about .about-stats {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  #about .about-stats>div {
+    padding: 12px 4px !important;
+  }
+
+  #about .about-stats>div>div:first-child {
+    font-size: 1.1rem !important;
+  }
+
+  #about .about-stats>div>div:last-child {
+    font-size: 9px !important;
   }
 }
