@@ -22,6 +22,7 @@ export default function CalorieCalculatorPreview() {
           }}
         >
           <div
+            className="calc-preview-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -29,6 +30,7 @@ export default function CalorieCalculatorPreview() {
           >
             {/* Left - Content */}
             <div
+              className="calc-preview-content"
               style={{
                 padding: '56px',
                 display: 'flex',
@@ -135,6 +137,7 @@ export default function CalorieCalculatorPreview() {
 
             {/* Right - Visual */}
             <div
+              className="calc-preview-visual"
               style={{
                 position: 'relative',
                 display: 'flex',
@@ -188,6 +191,7 @@ export default function CalorieCalculatorPreview() {
 
               {/* Floating result */}
               <motion.div
+                className="calc-preview-float"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 style={{

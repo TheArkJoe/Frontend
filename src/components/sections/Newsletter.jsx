@@ -114,6 +114,7 @@ export default function Newsletter() {
         />
 
         <div
+          className="newsletter-selector"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -154,6 +155,7 @@ export default function Newsletter() {
         </div>
 
         <form
+          className="newsletter-form"
           onSubmit={handleSubmit}
           style={{
             display: 'flex',

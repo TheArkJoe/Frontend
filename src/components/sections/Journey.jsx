@@ -57,6 +57,7 @@ export default function Journey() {
 
         {/* Combined Photo and Text Grid */}
         <div
+          className="journey-grid"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -66,6 +67,7 @@ export default function Journey() {
         >
           {journeyItems.map((item, i) => (
             <motion.div
+              className="journey-card"
               key={i}
               initial={{ opacity: 0, y: 20, scale: 0.98 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -100,6 +102,7 @@ export default function Journey() {
                 }}
               />
               <p
+                className="journey-caption"
                 style={{
                   position: 'absolute',
                   bottom: '16px',

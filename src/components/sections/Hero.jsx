@@ -29,6 +29,7 @@ export default function Hero() {
           width: '100%',
           height: '100%',
           backgroundImage: `url(${mainPage})`,
+          overflow: 'hidden',
           backgroundSize: 'cover',
           backgroundPosition: 'center 20%',
           backgroundRepeat: 'no-repeat',
@@ -49,6 +50,7 @@ export default function Hero() {
 
       {/* Content */}
       <div
+        className="hero-content"
         style={{
           position: 'relative',
           zIndex: 10,
@@ -60,6 +62,7 @@ export default function Hero() {
       >
         {/* Headline */}
         <motion.h1
+          className="hero-title"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
@@ -79,6 +82,7 @@ export default function Hero() {
 
         {/* Subtitle */}
         <motion.p
+          className="hero-subtitle"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
@@ -95,6 +99,7 @@ export default function Hero() {
 
         {/* Credential badges */}
         <motion.div
+          className="hero-badges"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.25 }}
@@ -138,6 +143,7 @@ export default function Hero() {
 
         {/* CTAs */}
         <motion.div
+          className="hero-actions"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.35 }}

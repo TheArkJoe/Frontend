@@ -30,6 +30,7 @@ export default function FAQ() {
               }}
             >
               <button
+                className="faq-question"
                 onClick={() => setOpen(open === i ? null : i)}
                 style={{
                   width: '100%',
@@ -69,6 +70,7 @@ export default function FAQ() {
                     style={{ overflow: 'hidden' }}
                   >
                     <div
+                      className="faq-answer"
                       style={{
                         padding: '0 22px 20px',
                         fontSize: '14px',

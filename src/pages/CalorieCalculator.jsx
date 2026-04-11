@@ -93,7 +93,7 @@ export default function CalorieCalculator() {
 
       {/* ─── Page Content ─── */}
       <section style={{ padding: '120px 24px 96px' }} id='calculator'>
-        <div style={{ maxWidth: '620px', margin: '0 auto' }}>
+        <div className="calculator-container" style={{ maxWidth: '620px', margin: '0 auto' }}>
 
           {/* Back link */}
           <motion.div
@@ -152,6 +152,7 @@ export default function CalorieCalculator() {
 
           {/* Form card */}
           <motion.form
+            className="calculator-form-card"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -165,6 +166,7 @@ export default function CalorieCalculator() {
             }}
           >
             <div
+              className="calculator-form-grid"
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, 1fr)',
@@ -172,7 +174,7 @@ export default function CalorieCalculator() {
               }}
             >
               {/* Gender — full width */}
-              <div style={{ gridColumn: 'span 2' }}>
+              <div className="calculator-full-span" style={{ gridColumn: 'span 2' }}>
                 <label style={labelStyle}>{c.gender}</label>
                 <div style={{ display: 'flex', gap: '10px' }}>
                   {['male', 'female'].map((g) => (
@@ -265,7 +267,7 @@ export default function CalorieCalculator() {
               </div>
 
               {/* Training Frequency — full width */}
-              <div style={{ gridColumn: 'span 2' }}>
+              <div className="calculator-full-span" style={{ gridColumn: 'span 2' }}>
                 <label style={labelStyle}>{c.trainingFrequency}</label>
                 <select
                   value={form.training}
@@ -306,6 +308,7 @@ export default function CalorieCalculator() {
           {/* ─── Results ─── */}
           {results && (
             <motion.div
+              className="calculator-results"
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -331,6 +334,7 @@ export default function CalorieCalculator() {
               </h3>
 
               <div
+                className="calculator-results-grid"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(4, 1fr)',

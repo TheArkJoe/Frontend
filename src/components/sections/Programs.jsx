@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Star } from 'lucide-react';
 import SectionTitle from '../ui/SectionTitle';
@@ -5,6 +6,9 @@ import { useLanguage } from '../../context/LanguageContext';
 
 export default function Programs() {
   const { t } = useLanguage();
+  const [selectedPeriod, setSelectedPeriod] = useState('monthly');
+  const programOneApplyLink = 'https://docs.google.com/forms/d/e/1FAIpQLScudcs02nZqD1NRDRa9kUA86KsZLwFIPjL0vD9X6aKg_NjYXQ/viewform?usp=dialog';
+
   const coverageFeatures =
     t.programs.coverageFeatures || [
       'Custom Training Plan',
@@ -15,6 +19,37 @@ export default function Programs() {
       'Bi-Weekly Strategy Calls',
       'Educational Nutrition Guide',
     ];
+
+  const visibleTiers = (t.programs.tiers || []).slice(0, 2);
+
+  const periodOptions = [
+    {
+      key: 'monthly',
+      label: t.programs?.billing?.monthly || '1 Month',
+      priceSuffix: t.programs?.billing?.perMonth || '/ month',
+    },
+    {
+      key: 'quarterly',
+      label: t.programs?.billing?.quarterly || '3 Months',
+      priceSuffix: t.programs?.billing?.perQuarter || '/ 3 months',
+    },
+  ];
+
+  const activePeriod = periodOptions.find((period) => period.key === selectedPeriod) || periodOptions[0];
+
+  const getTierPrice = (tier) => {
+    if (selectedPeriod === 'quarterly') {
+      return (
+        tier.prices?.quarterly
+        || tier.priceQuarterly
+        || tier.priceThreeMonths
+        || tier.price3Months
+        || tier.price
+      );
+    }
+
+    return tier.prices?.monthly || tier.priceMonthly || tier.price;
+  };
 
   return (
     <section
@@ -28,14 +63,16 @@ export default function Programs() {
         <SectionTitle label={t.programs.label} title={t.programs.title} />
 
         <div
+          className="programs-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '20px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '24px',
           }}
         >
-          {t.programs.tiers.map((tier, i) => (
+          {visibleTiers.map((tier, i) => (
             <motion.div
+              className="program-card"
               key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -44,19 +81,16 @@ export default function Programs() {
               whileHover={{ y: -5 }}
               style={{
                 position: 'relative',
-                borderRadius: '16px',
-                padding: '28px',
+                borderRadius: '24px',
+                padding: '32px',
                 display: 'flex',
                 flexDirection: 'column',
                 background: 'var(--color-card)',
-                border: tier.popular
-                  ? '2px solid var(--color-primary)'
-                  : '1px solid var(--color-border)',
-                boxShadow: tier.popular ? 'var(--shadow-glow)' : 'none',
+                border: '1px solid var(--color-border)',
                 transition: 'all 0.3s ease',
               }}
             >
-              {tier.popular && (
+              {tier.popular && i === 0 && (
                 <div
                   style={{
                     position: 'absolute',
@@ -80,13 +114,52 @@ export default function Programs() {
                 </div>
               )}
 
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  background: 'var(--color-bg-secondary)',
+                  borderRadius: '999px',
+                  padding: '4px',
+                  marginBottom: '22px',
+                  width: 'fit-content',
+                }}
+              >
+                {periodOptions.map((period) => {
+                  const isActive = selectedPeriod === period.key;
+
+                  return (
+                    <button
+                      key={period.key}
+                      type="button"
+                      onClick={() => setSelectedPeriod(period.key)}
+                      style={{
+                        background: isActive ? 'var(--color-primary)' : 'transparent',
+                        color: isActive ? '#fff' : 'var(--color-text-secondary)',
+                        padding: '8px 16px',
+                        borderRadius: '999px',
+                        fontSize: '14px',
+                        fontWeight: 500,
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      {period.label}
+                    </button>
+                  );
+                })}
+              </div>
+
               <span
                 style={{
-                  fontSize: '11px',
-                  fontWeight: 600,
+                  fontSize: '12px',
+                  fontWeight: 700,
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
-                  marginBottom: '16px',
+                  marginBottom: '14px',
                   color: 'var(--color-primary)',
                 }}
               >
@@ -95,9 +168,9 @@ export default function Programs() {
 
               <h3
                 style={{
-                  fontSize: '1.25rem',
+                  fontSize: '2.15rem',
                   fontWeight: 700,
-                  marginBottom: '8px',
+                  marginBottom: '12px',
                   color: 'var(--color-text)',
                 }}
               >
@@ -106,7 +179,7 @@ export default function Programs() {
 
               <p
                 style={{
-                  fontSize: '14px',
+                  fontSize: '15px',
                   marginBottom: '24px',
                   lineHeight: 1.6,
                   color: 'var(--color-text-secondary)',
@@ -126,8 +199,8 @@ export default function Programs() {
                   marginBottom: '28px',
                 }}
               >
-                {coverageFeatures.map((feature, fi) => {
-                  const isIncluded = fi < (tier.includedCount ?? coverageFeatures.length);
+                {tier.features.map((feature, fi) => {
+                  const isIncluded = fi < (tier.includedCount ?? tier.features.length);
 
                   return (
                   <li
@@ -178,27 +251,60 @@ export default function Programs() {
                 })}
               </ul>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <p
                 style={{
-                  width: '100%',
-                  padding: '12px 24px',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  border: tier.popular ? 'none' : '1.5px solid var(--color-border)',
-                  background: tier.popular ? 'var(--color-primary)' : 'transparent',
-                  color: tier.popular ? '#fff' : 'var(--color-text)',
-                  transition: 'all 0.2s ease',
+                  fontSize: '2.7rem',
+                  fontWeight: 800,
+                  textAlign: 'center',
+                  marginBottom: '20px',
+                  color: 'var(--color-text)',
+                  lineHeight: 1,
                 }}
               >
-                {tier.cta}
-              </motion.button>
+                {getTierPrice(tier)}
+                <span
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: 'var(--color-text-secondary)',
+                    marginLeft: '6px',
+                  }}
+                >
+                  {activePeriod.priceSuffix}
+                </span>
+              </p>
             </motion.div>
           ))}
+        </div>
+
+        <div
+          style={{
+            marginTop: '32px',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <a
+            href={programOneApplyLink}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '12px 24px',
+              borderRadius: '12px',
+              border: '1px solid var(--color-border)',
+              backgroundColor: 'var(--color-primary)',
+              color: 'var(--color-text)',
+              textDecoration: 'none',
+              fontWeight: 700,
+              fontSize: '14px',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            {t.programs.applyProgramOne || 'Apply for Program One'}
+          </a>
         </div>
       </div>
     </section>

@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, Globe, Menu, X, Instagram, MessageCircle } from 'lucide-react';
+import { Sun, Moon, Globe, Menu, X, Instagram, MessageCircle, Youtube } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
-import { getAvailableLanguages } from '../../i18n';
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { lang, setLang, t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [langDropdown, setLangDropdown] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
-  const languages = getAvailableLanguages();
+  const youtubeChannelLink = 'https://youtube.com/@your-channel';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -29,6 +27,7 @@ export default function Navbar() {
     //{ label: t.nav.programs, href: '/#programs' },
     //{ label: t.nav.apply, href: '/#programs' },
     { label: t.nav.faq, href: '/#faq' },
+    { label: t.nav.feedback, href: '/feedback' },
   ];
 
   const handleNavClick = (href) => {
@@ -37,6 +36,10 @@ export default function Navbar() {
       const el = document.getElementById(href.slice(2));
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const toggleLanguage = () => {
+    setLang(lang === 'en' ? 'ar' : 'en');
   };
 
   const iconBtnStyle = {
@@ -77,6 +80,7 @@ export default function Navbar() {
       }}
     >
       <div
+        className="navbar-inner"
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
@@ -162,6 +166,19 @@ export default function Navbar() {
           >
             <MessageCircle size={18} />
           </a>
+          <a
+            href={youtubeChannelLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              ...iconBtnStyle,
+              textDecoration: 'none',
+            }}
+            className="desktop-only"
+            aria-label="YouTube"
+          >
+            <Youtube size={18} />
+          </a>
 
           {/* Theme Toggle */}
           <button
@@ -173,66 +190,19 @@ export default function Navbar() {
           </button>
 
           {/* Language */}
-          <div style={{ position: 'relative' }}>
-            <button
-              onClick={() => setLangDropdown(!langDropdown)}
-              style={iconBtnStyle}
-              aria-label="Change language"
-            >
-              <Globe size={18} />
-            </button>
-
-            <AnimatePresence>
-              {langDropdown && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  style={{
-                    position: 'absolute',
-                    top: '44px',
-                    right: 0,
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    minWidth: '140px',
-                    zIndex: 50,
-                    background: 'var(--color-card)',
-                    border: '1px solid var(--color-border)',
-                    boxShadow: 'var(--shadow-md)',
-                  }}
-                >
-                  {languages.map((l) => (
-                    <button
-                      key={l.code}
-                      onClick={() => {
-                        setLang(l.code);
-                        setLangDropdown(false);
-                      }}
-                      style={{
-                        width: '100%',
-                        padding: '10px 16px',
-                        fontSize: '14px',
-                        textAlign: 'left',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        fontFamily: 'inherit',
-                        background: lang === l.code ? 'var(--color-bg-tertiary)' : 'transparent',
-                        color: 'var(--color-text)',
-                        transition: 'background 0.15s',
-                      }}
-                    >
-                      <span>{l.flag}</span>
-                      <span>{l.name}</span>
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          <button
+            onClick={toggleLanguage}
+            style={{
+              ...iconBtnStyle,
+              gap: '6px',
+              paddingInline: '10px',
+            }}
+            aria-label="Switch language"
+            title={lang === 'en' ? 'Switch to Arabic' : 'Switch to English'}
+          >
+            <Globe size={16} />
+            <span style={{ fontSize: '12px', fontWeight: 700 }}>{lang === 'en' ? 'AR' : 'EN'}</span>
+          </button>
 
           {/* Mobile Menu Button */}
           <button
@@ -264,6 +234,7 @@ export default function Navbar() {
             }}
           >
             <div
+              className="mobile-menu-inner"
               style={{
                 padding: '16px 24px',
                 display: 'flex',

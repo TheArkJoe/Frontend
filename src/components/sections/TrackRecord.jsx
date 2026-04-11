@@ -17,6 +17,7 @@ export default function TrackRecord() {
         <SectionTitle label={t.trackRecord.label} title={t.trackRecord.title} />
 
         <div
+          className="track-grid"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',

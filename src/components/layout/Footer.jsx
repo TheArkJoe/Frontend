@@ -24,6 +24,7 @@ export default function Footer() {
     >
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
         <div
+          className="footer-top"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -34,6 +35,7 @@ export default function Footer() {
         >
           {/* Left */}
           <div
+            className="footer-brand"
             style={{
               display: 'flex',
               alignItems: 'center',
