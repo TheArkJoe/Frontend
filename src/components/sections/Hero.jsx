@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 import mainPage from '../../assets/MainPage.jpeg';
+import mainPageP from '../../assets/MainPageP.jpeg';
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -49,18 +50,19 @@ export default function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          overflow: 'hidden',
+          top: isPhone ? '-2%' : '0',
+
         }}
       >
         <img
-          src={mainPage}
+          src={isPhone ? mainPageP : mainPage}
           alt="Joey running"
           draggable={false}
           style={{
             width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center center',
+            height: isPhone ? 'auto' : '100%',
+            objectFit: isPhone ? 'contain' : 'cover',
+            objectPosition: isPhone ? 'center top' : 'center center',
             display: 'block',
             userSelect: 'none',
           }}
