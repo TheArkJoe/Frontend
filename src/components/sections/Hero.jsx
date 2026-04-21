@@ -5,7 +5,6 @@ import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 import mainPage from '../../assets/MainPage.jpeg';
-import mainPageP from '../../assets/MainPageP.jpeg';
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -30,27 +29,11 @@ export default function Hero() {
   }, []);
 
   const badges = [t.hero.badge1, t.hero.badge2, t.hero.badge3, t.hero.badge4];
-  const mobileBackgroundFrame = isPhone
-    ? {
-        top: '-24px',
-        left: '-22%',
-        width: '155%',
-        height: 'calc(100% + 48px)',
-        transform: 'skewX(-14deg) translateX(-6%) scale(1.12)',
-      }
-    : {
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        transform: 'none',
-      };
 
   return (
     <section
       id="hero"
       style={{
-        top: isPhone ? '-100px' : '0',
         position: 'relative',
         minHeight: '100vh',
         height: '100svh',
@@ -62,28 +45,35 @@ export default function Hero() {
     >
       {/* Background Image */}
       <div
+        aria-hidden
         style={{
           position: 'absolute',
-          ...mobileBackgroundFrame,
-          backgroundImage: isPhone ? `url(${mainPageP})` : `url(${mainPage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: isPhone ? '32% 16%' : 'center 20%',
-          backgroundRepeat: 'no-repeat',
-          transformOrigin: 'left center',
-          willChange: 'transform',
+          inset: 0,
+          overflow: 'hidden',
         }}
-      />
+      >
+        <img
+          src={mainPage}
+          alt="Joey running"
+          draggable={false}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+            display: 'block',
+            userSelect: 'none',
+          }}
+        />
+      </div>
 
       {/* Dark Overlay */}
       <div
         style={{
           position: 'absolute',
-          ...mobileBackgroundFrame,
-          right: 'auto',
-          bottom: 'auto',
-          transformOrigin: 'left center',
+          inset: 0,
           background:
-            'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.75) 100%)',
+            'linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.85) 100%)',
         }}
       />
 
@@ -91,13 +81,12 @@ export default function Hero() {
       <div
         className="hero-content"
         style={{
-          bottom: isPhone ? '-80px' : '-45px',
           position: 'relative',
           zIndex: 10,
           maxWidth: '800px',
           margin: '0 auto',
           textAlign: 'center',
-          padding: '250px 24px 100px',
+          padding: isPhone ? '0 20px 56px' : '0 24px 72px',
         }}
       >
         {/* Headline */}
@@ -112,7 +101,7 @@ export default function Hero() {
             color: '#ffffff',
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
-            marginBottom: '24px',
+            marginBottom: isPhone ? '35px' : '24px',
             textShadow: '0 2px 40px rgba(0,0,0,0.3)',
           }}
         >
@@ -195,7 +184,7 @@ export default function Hero() {
             gap: '16px',
           }}
         >
-          <a href="#newsletter" style={{ textDecoration: 'none' }}>
+          <a href="#programs" style={{ textDecoration: 'none' }}>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -249,9 +238,10 @@ export default function Hero() {
           bottom: 0,
           left: 0,
           right: 0,
-          height: '180px',
+          height: isPhone ? '55%' : '45%',
           pointerEvents: 'none',
-          background: 'linear-gradient(to top, var(--color-bg), transparent)',
+          background:
+            'linear-gradient(to top, var(--color-bg) 0%, var(--color-bg) 8%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0) 100%)',
         }}
       />
     </section>

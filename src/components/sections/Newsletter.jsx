@@ -8,7 +8,6 @@ import { createLeadSubmission } from '../../services/leads/createLeadSubmission'
 export default function Newsletter() {
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
-  const [leadType, setLeadType] = useState('newsletter');
   const [submitState, setSubmitState] = useState({ type: 'idle', message: '' });
 
   const handleSubmit = async (e) => {
@@ -26,16 +25,13 @@ export default function Newsletter() {
     try {
       await createLeadSubmission({
         email: trimmed,
-        source: leadType,
+        source: 'newsletter',
       });
 
       setEmail('');
       setSubmitState({
         type: 'success',
-        message:
-          leadType === 'program'
-            ? t.newsletter.messages.programSuccess
-            : t.newsletter.messages.newsletterSuccess,
+        message: t.newsletter.messages.newsletterSuccess,
       });
     } catch (error) {
       const errorCode = error?.code || error?.message || 'UNKNOWN';
@@ -94,9 +90,6 @@ export default function Newsletter() {
     }
   };
 
-  const submitLabel =
-    leadType === 'program' ? t.newsletter.ctaProgram : t.newsletter.ctaNewsletter;
-
   return (
     <section
       id="newsletter"
@@ -112,47 +105,6 @@ export default function Newsletter() {
           subtitle={t.newsletter.subtitle}
           center
         />
-
-        <div
-          className="newsletter-selector"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            padding: '4px',
-            borderRadius: '999px',
-            border: '1px solid var(--color-border)',
-            background: 'var(--color-card)',
-            marginTop: '6px',
-          }}
-        >
-          {[
-            { value: 'program', label: t.newsletter.selector.program },
-            { value: 'newsletter', label: t.newsletter.selector.newsletter },
-          ].map((option) => {
-            const active = leadType === option.value;
-            return (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => setLeadType(option.value)}
-                style={{
-                  border: 'none',
-                  borderRadius: '999px',
-                  padding: '8px 14px',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  fontFamily: 'inherit',
-                  cursor: 'pointer',
-                  background: active ? 'var(--color-primary)' : 'transparent',
-                  color: active ? '#fff' : 'var(--color-text-secondary)',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {option.label}
-              </button>
-            );
-          })}
-        </div>
 
         <form
           className="newsletter-form"
@@ -203,7 +155,7 @@ export default function Newsletter() {
             }}
             disabled={submitState.type === 'loading'}
           >
-            {submitLabel}
+            {t.newsletter.ctaNewsletter}
             <Send size={14} />
           </motion.button>
         </form>

@@ -83,6 +83,8 @@ const en = {
       quarterly: '3 Months',
       perMonth: '/ month',
       perQuarter: '/ 3 months',
+      discountOff: 'OFF',
+      save: 'Save',
     },
     tiers: [
       {
@@ -108,7 +110,7 @@ const en = {
         name: 'Sprinting & Hybrid Athletes',
         description: 'Maximize sprint speed, explosive power, and athletic performance for hybrid competitors.',
         prices: {
-          monthly: '3,000 EGP',
+          monthly: '3,500 EGP',
           quarterly: '7,000 EGP',
         },
         includedCount: 7,

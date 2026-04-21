@@ -83,6 +83,8 @@ const ar = {
       quarterly: '٣ أشهر',
       perMonth: '/ شهر',
       perQuarter: '/ ٣ أشهر',
+      discountOff: 'خصم',
+      save: 'وفّر',
     },
     tiers: [
       {
@@ -109,7 +111,7 @@ const ar = {
         description:
           'عظّم سرعة العدو والقوة الانفجارية والأداء الرياضي للمنافسين الهجينين.',
         prices: {
-          monthly: '٣٬٠٠٠ ج.م',
+          monthly: '٣٬٥٠٠ ج.م',
           quarterly: '٧٬٠٠٠ ج.م',
         },
         includedCount: 7,

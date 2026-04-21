@@ -1,4 +1,4 @@
-import { Instagram, MessageCircle, Mail } from 'lucide-react';
+import { Instagram, MessageCircle, Mail, Youtube } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 export default function Footer() {
@@ -65,15 +65,17 @@ export default function Footer() {
           {/* Social */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {[
-              { icon: Instagram, href: 'https://instagram.com/' },
-              { icon: MessageCircle, href: 'https://wa.me/' },
-              { icon: Mail, href: 'mailto:coach@example.com' },
-            ].map(({ icon: Icon, href }, i) => (
+              { icon: Instagram, href: 'https://www.instagram.com/joee_joeyy?igsh=M2E0YXZ4dDVzY3Bv', label: 'Instagram' },
+              { icon: MessageCircle, href: 'https://wa.me/201027909082', label: 'WhatsApp' },
+              { icon: Youtube, href: 'https://youtube.com/@joeejoeyy?si=D8rxRXdY0U4r8GY2', label: 'YouTube' },
+              { icon: Mail, href: 'mailto:coach@example.com', label: 'Email' },
+            ].map(({ icon: Icon, href, label }, i) => (
               <a
                 key={i}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={label}
                 style={socialIconStyle}
               >
                 <Icon size={18} />

@@ -12,7 +12,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
-  const youtubeChannelLink = 'https://youtube.com/@your-channel';
+  const youtubeChannelLink = 'https://youtube.com/@joeejoeyy?si=D8rxRXdY0U4r8GY2';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -146,11 +146,8 @@ export default function Navbar() {
             href="https://www.instagram.com/joee_joeyy?igsh=M2E0YXZ4dDVzY3Bv"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              ...iconBtnStyle,
-              textDecoration: 'none',
-            }}
-            className="desktop-only"
+            style={{ ...iconBtnStyle, textDecoration: 'none' }}
+            aria-label="Instagram"
           >
             <Instagram size={18} />
           </a>
@@ -158,11 +155,8 @@ export default function Navbar() {
             href="https://wa.me/201027909082"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              ...iconBtnStyle,
-              textDecoration: 'none',
-            }}
-            className="desktop-only"
+            style={{ ...iconBtnStyle, textDecoration: 'none' }}
+            aria-label="WhatsApp"
           >
             <MessageCircle size={18} />
           </a>
@@ -170,11 +164,7 @@ export default function Navbar() {
             href={youtubeChannelLink}
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              ...iconBtnStyle,
-              textDecoration: 'none',
-            }}
-            className="desktop-only"
+            style={{ ...iconBtnStyle, textDecoration: 'none' }}
             aria-label="YouTube"
           >
             <Youtube size={18} />

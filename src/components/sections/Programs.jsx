@@ -4,9 +4,53 @@ import { Check, Star } from 'lucide-react';
 import SectionTitle from '../ui/SectionTitle';
 import { useLanguage } from '../../context/LanguageContext';
 
+const ARABIC_INDIC_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+
+const toWesternDigits = (value) =>
+  String(value).replace(/[\u0660-\u0669\u06F0-\u06F9]/g, (ch) => {
+    const code = ch.charCodeAt(0);
+    const base = code >= 0x06f0 ? 0x06f0 : 0x0660;
+    return String(code - base);
+  });
+
+const parsePriceNumber = (priceStr) => {
+  if (!priceStr) return null;
+  const normalized = toWesternDigits(priceStr).replace(/[,\u066C\u060C\s]/g, '');
+  const match = normalized.match(/\d+(?:\.\d+)?/);
+  return match ? parseFloat(match[0]) : null;
+};
+
+const isArabicPriceString = (value) => /[\u0660-\u0669]/.test(String(value));
+
+const formatInteger = (num, arabic) => {
+  const withCommas = Math.round(num).toLocaleString('en-US');
+  if (!arabic) return withCommas;
+  return withCommas
+    .replace(/,/g, '\u066C')
+    .replace(/\d/g, (d) => ARABIC_INDIC_DIGITS[parseInt(d, 10)]);
+};
+
+const formatPriceLike = (template, num) => {
+  if (!template) return formatInteger(num, false);
+  const arabic = isArabicPriceString(template);
+  const suffix = String(template)
+    .replace(/^[\s\d\u0660-\u0669\u06F0-\u06F9.,\u066C\u060C]+/, '')
+    .trim();
+  const numberPart = formatInteger(num, arabic);
+  return suffix ? `${numberPart} ${suffix}` : numberPart;
+};
+
+const formatPercent = (value, arabic) => {
+  const rounded = Math.round(value);
+  const digits = arabic
+    ? String(rounded).replace(/\d/g, (d) => ARABIC_INDIC_DIGITS[parseInt(d, 10)])
+    : String(rounded);
+  return `${digits}%`;
+};
+
 export default function Programs() {
   const { t } = useLanguage();
-  const [selectedPeriod, setSelectedPeriod] = useState('monthly');
+  const [selectedPeriod, setSelectedPeriod] = useState('quarterly');
   const programOneApplyLink = 'https://docs.google.com/forms/d/e/1FAIpQLScudcs02nZqD1NRDRa9kUA86KsZLwFIPjL0vD9X6aKg_NjYXQ/viewform?usp=dialog';
 
   const coverageFeatures =
@@ -51,6 +95,29 @@ export default function Programs() {
     return tier.prices?.monthly || tier.priceMonthly || tier.price;
   };
 
+  const getQuarterlyDiscount = (tier) => {
+    const monthlyRaw = tier.prices?.monthly || tier.priceMonthly || tier.price;
+    const quarterlyRaw =
+      tier.prices?.quarterly
+      || tier.priceQuarterly
+      || tier.priceThreeMonths
+      || tier.price3Months;
+
+    const monthly = parsePriceNumber(monthlyRaw);
+    const quarterly = parsePriceNumber(quarterlyRaw);
+    if (!monthly || !quarterly) return null;
+
+    const originalTotal = monthly * 3;
+    if (originalTotal <= quarterly) return null;
+
+    const percent = ((originalTotal - quarterly) / originalTotal) * 100;
+    return {
+      originalLabel: formatPriceLike(monthlyRaw, originalTotal),
+      percent,
+      arabic: isArabicPriceString(monthlyRaw),
+    };
+  };
+
   return (
     <section
       id="programs"
@@ -70,7 +137,11 @@ export default function Programs() {
             gap: '24px',
           }}
         >
-          {visibleTiers.map((tier, i) => (
+          {visibleTiers.map((tier, i) => {
+            const discount = selectedPeriod === 'quarterly' ? getQuarterlyDiscount(tier) : null;
+            const offLabel = t.programs?.billing?.discountOff || 'OFF';
+
+            return (
             <motion.div
               className="program-card"
               key={i}
@@ -251,6 +322,47 @@ export default function Programs() {
                 })}
               </ul>
 
+              {discount && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px',
+                    marginBottom: '6px',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: '16px',
+                      fontWeight: 500,
+                      color: 'var(--color-text-secondary)',
+                      textDecoration: 'line-through',
+                      textDecorationThickness: '1.5px',
+                      opacity: 0.8,
+                    }}
+                  >
+                    {discount.originalLabel}
+                  </span>
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '3px 10px',
+                      borderRadius: '999px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      letterSpacing: '0.05em',
+                      color: '#fff',
+                      background: 'var(--color-primary)',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {`-${formatPercent(discount.percent, discount.arabic)} ${offLabel}`}
+                  </span>
+                </div>
+              )}
+
               <p
                 style={{
                   fontSize: '2.7rem',
@@ -274,7 +386,8 @@ export default function Programs() {
                 </span>
               </p>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         <div
