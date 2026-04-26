@@ -148,15 +148,8 @@ const ar = {
       newsletterSuccess: 'تم إرسال طلب النشرة البريدية.',
       genericError: 'تعذر الإرسال الآن. حاول مرة أخرى.',
       integrationMissing:
-        'تكامل Google Sheets غير مُهيأ بعد. أضف VITE_LEADS_ENDPOINT في متغيرات البيئة لديك.',
-      wrongEndpoint:
-        'قيمة VITE_LEADS_ENDPOINT غير صالحة. استخدم رابط Web App الخاص بـ Apps Script والمنتهي بـ /exec، وليس رابط الجدول.',
-      endpointAuthError:
-        'الـ endpoint رفض الطلب. تحقق من صلاحيات نشر Apps Script وإعدادات مفتاح API.',
-      endpointNetworkError:
-        'تعذر الوصول إلى الـ endpoint. تحقق من اتصال الإنترنت وتأكد أن رابط الـ endpoint قابل للوصول.',
-      endpointInvalidResponse:
-        'أعاد الـ endpoint استجابة غير متوقعة. تحقق من دالة doPost في Apps Script ومن JSON المُعاد.',
+        'Supabase غير مُهيأ بعد. أضف VITE_SUPABASE_URL و VITE_SUPABASE_PUBLISHABLE_KEY في متغيرات البيئة.',
+      databaseError: 'تعذر حفظ الاشتراك. حاول مرة أخرى.',
     },
     disclaimer: 'بدون إزعاج. إلغاء الاشتراك في أي وقت.',
   },

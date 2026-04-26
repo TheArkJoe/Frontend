@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SectionTitle from '../ui/SectionTitle';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -51,7 +52,6 @@ const formatPercent = (value, arabic) => {
 export default function Programs() {
   const { t } = useLanguage();
   const [selectedPeriod, setSelectedPeriod] = useState('quarterly');
-  const programOneApplyLink = 'https://docs.google.com/forms/d/e/1FAIpQLScudcs02nZqD1NRDRa9kUA86KsZLwFIPjL0vD9X6aKg_NjYXQ/viewform?usp=dialog';
 
   const coverageFeatures =
     t.programs.coverageFeatures || [
@@ -397,10 +397,8 @@ export default function Programs() {
             justifyContent: 'center',
           }}
         >
-          <a
-            href={programOneApplyLink}
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            to="/apply"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -417,7 +415,7 @@ export default function Programs() {
             }}
           >
             {t.programs.applyProgramOne || 'Apply for Program One'}
-          </a>
+          </Link>
         </div>
       </div>
     </section>

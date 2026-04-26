@@ -1,25 +1,46 @@
-import { appendLeadToGoogleSheet } from './providers/googleSheetsProvider';
+import { createClient } from '@supabase/supabase-js';
 
-const PROVIDERS = [appendLeadToGoogleSheet];
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const NEWSLETTER_TABLE = 'newsletter';
 
-export async function createLeadSubmission({ email, source }) {
+const supabase = SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY
+  ? createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+  : null;
+
+export async function createLeadSubmission({ email }) {
   const payload = {
     email: String(email || '').trim().toLowerCase(),
-    source,
-    createdAt: new Date().toISOString(),
   };
 
   if (!payload.email) {
     throw new Error('INVALID_EMAIL');
   }
 
-  if (payload.source !== 'program' && payload.source !== 'newsletter') {
-    throw new Error('INVALID_SOURCE');
+  if (!supabase) {
+    const error = new Error('SUPABASE_NOT_CONFIGURED');
+    error.code = 'SUPABASE_NOT_CONFIGURED';
+    throw error;
   }
 
-  for (const provider of PROVIDERS) {
-    await provider(payload);
+  const { error } = await supabase.from(NEWSLETTER_TABLE).insert([payload]);
+
+  if (error) {
+    const submissionError = new Error('SUPABASE_INSERT_FAILED');
+    submissionError.code = 'SUPABASE_INSERT_FAILED';
+    submissionError.details = {
+      table: NEWSLETTER_TABLE,
+      message: error.message,
+      code: error.code,
+      hint: error.hint,
+      details: error.details,
+    };
+    throw submissionError;
   }
 
-  return payload;
+  return {
+    saved: true,
+    payload,
+    data: null,
+  };
 }

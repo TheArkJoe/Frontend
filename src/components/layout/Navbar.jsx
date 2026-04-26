@@ -5,6 +5,8 @@ import { Sun, Moon, Globe, Menu, X, Instagram, MessageCircle, Youtube } from 'lu
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
 
+const LEAVE_WARNING_MESSAGE = 'Are you sure? all data will be lost.';
+
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { lang, setLang, t } = useLanguage();
@@ -12,6 +14,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const isApply = location.pathname === '/apply';
   const youtubeChannelLink = 'https://youtube.com/@joeejoeyy?si=D8rxRXdY0U4r8GY2';
 
   useEffect(() => {
@@ -30,7 +33,27 @@ export default function Navbar() {
     { label: t.nav.feedback, href: '/feedback' },
   ];
 
-  const handleNavClick = (href) => {
+  const confirmLeaveApply = (event, href) => {
+    if (!isApply) return true;
+
+    const destinationPath = href.startsWith('/#') ? '/' : href;
+    if (destinationPath === '/apply') return true;
+
+    const confirmed = window.confirm(LEAVE_WARNING_MESSAGE);
+    if (!confirmed) {
+      event.preventDefault();
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleNavClick = (event, href) => {
+    if (!confirmLeaveApply(event, href)) {
+      setMobileOpen(false);
+      return;
+    }
+
     setMobileOpen(false);
     if (href.startsWith('/#') && isHome) {
       const el = document.getElementById(href.slice(2));
@@ -91,7 +114,13 @@ export default function Navbar() {
         }}
       >
         {/* Logo */}
-        <a href="#hero" style={{ textDecoration: 'none' }}>
+        <Link
+          to="/"
+          onClick={(event) => {
+            confirmLeaveApply(event, '/');
+          }}
+          style={{ textDecoration: 'none' }}
+        >
           <span
             style={{
               fontSize: '1.15rem',
@@ -102,7 +131,7 @@ export default function Navbar() {
           >
             JOE
           </span>
-        </a>
+        </Link>
 
         {/* Desktop Links */}
         <div
@@ -117,7 +146,7 @@ export default function Navbar() {
             <Link
               key={link.label}
               to={link.href}
-              onClick={() => handleNavClick(link.href)}
+              onClick={(event) => handleNavClick(event, link.href)}
               style={{
                 textDecoration: 'none',
                 fontSize: '13.5px',
@@ -236,7 +265,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   to={link.href}
-                  onClick={() => handleNavClick(link.href)}
+                  onClick={(event) => handleNavClick(event, link.href)}
                   style={{
                     padding: '12px',
                     fontSize: '14px',

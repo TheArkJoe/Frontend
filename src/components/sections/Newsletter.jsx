@@ -25,7 +25,6 @@ export default function Newsletter() {
     try {
       await createLeadSubmission({
         email: trimmed,
-        source: 'newsletter',
       });
 
       setEmail('');
@@ -42,7 +41,7 @@ export default function Newsletter() {
         raw: error,
       });
 
-      if (errorCode === 'GOOGLE_SHEETS_NOT_CONFIGURED') {
+      if (errorCode === 'SUPABASE_NOT_CONFIGURED') {
         setSubmitState({
           type: 'error',
           message: t.newsletter.messages.integrationMissing,
@@ -50,34 +49,10 @@ export default function Newsletter() {
         return;
       }
 
-      if (errorCode === 'GOOGLE_SHEETS_WRONG_ENDPOINT') {
+      if (errorCode === 'SUPABASE_INSERT_FAILED') {
         setSubmitState({
           type: 'error',
-          message: t.newsletter.messages.wrongEndpoint,
-        });
-        return;
-      }
-
-      if (errorCode === 'GOOGLE_SHEETS_AUTH_ERROR') {
-        setSubmitState({
-          type: 'error',
-          message: t.newsletter.messages.endpointAuthError,
-        });
-        return;
-      }
-
-      if (errorCode === 'GOOGLE_SHEETS_NETWORK_ERROR') {
-        setSubmitState({
-          type: 'error',
-          message: t.newsletter.messages.endpointNetworkError,
-        });
-        return;
-      }
-
-      if (errorCode === 'GOOGLE_SHEETS_INVALID_RESPONSE') {
-        setSubmitState({
-          type: 'error',
-          message: t.newsletter.messages.endpointInvalidResponse,
+          message: t.newsletter.messages.databaseError,
         });
         return;
       }

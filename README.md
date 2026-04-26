@@ -24,68 +24,29 @@ The newsletter section now sends lead submissions as:
 
 The UI uses a selector, but the form layout stays the same.
 
-### Google Sheets connection
+### Supabase connection
 
-The direct Google Sheet URL is not enough for client-side writes. You need a writable endpoint.
+Lead capture now writes directly to Supabase.
 
-Recommended quick setup: **Google Apps Script Web App**.
+Required tables:
 
-1. Open the sheet and go to **Extensions → Apps Script**.
-2. Use this script:
+- `apply` (program application submissions)
+- `newsletter` (newsletter signups)
 
-```javascript
-const SHEET_NAME = 'Sheet1';
-const EXPECTED_API_KEY = ''; // optional
-
-function doPost(e) {
-	try {
-		const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-		const email = String((e.parameter && e.parameter.email) || '').trim();
-		const source = String((e.parameter && e.parameter.source) || '').trim().toLowerCase();
-		const apiKey = String((e.parameter && e.parameter.apiKey) || '').trim();
-
-		if (EXPECTED_API_KEY && apiKey !== EXPECTED_API_KEY) {
-			return ContentService.createTextOutput(
-				JSON.stringify({ ok: false, error: 'unauthorized' })
-			).setMimeType(ContentService.MimeType.JSON);
-		}
-
-		if (!email || !['program', 'newsletter'].includes(source)) {
-			return ContentService.createTextOutput(
-				JSON.stringify({ ok: false, error: 'invalid_payload' })
-			).setMimeType(ContentService.MimeType.JSON);
-		}
-
-		sheet.appendRow([email, source]);
-
-		return ContentService.createTextOutput(JSON.stringify({ ok: true })).setMimeType(
-			ContentService.MimeType.JSON
-		);
-  } catch (err) {
-    return ContentService.createTextOutput(
-      JSON.stringify({ ok: false, error: 'server_error' })
-    ).setMimeType(ContentService.MimeType.JSON);
-  }
-}
-```
-
-3. Deploy as **Web App**:
-	 - Execute as: **Me**
-	 - Access: **Anyone** (or your desired restricted option)
-4. Copy the Web App URL.
-5. Add `.env` in project root:
+Add `.env` in project root:
 
 ```bash
-VITE_LEADS_ENDPOINT="https://script.google.com/macros/s/XXXXXXXXXXXX/exec"
+VITE_SUPABASE_URL="https://YOUR_PROJECT.supabase.co"
+VITE_SUPABASE_PUBLISHABLE_KEY="YOUR_SUPABASE_PUBLISHABLE_KEY"
 ```
 
-6. Restart dev server.
+Then restart the dev server.
 
 ### Future-ready architecture
 
 Submission is routed through:
 
 - [src/services/leads/createLeadSubmission.js](src/services/leads/createLeadSubmission.js)
-- [src/services/leads/providers/googleSheetsProvider.js](src/services/leads/providers/googleSheetsProvider.js)
+- [src/services/leads/createProgramApplicationSubmission.js](src/services/leads/createProgramApplicationSubmission.js)
 
-To migrate to a real DB + dashboard later, keep the UI unchanged and replace/add providers (for example API/backend provider, PostgreSQL, Supabase, etc.).
+The UI stays unchanged while storage is handled by Supabase.

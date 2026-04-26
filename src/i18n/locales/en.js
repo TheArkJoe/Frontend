@@ -146,15 +146,8 @@ const en = {
       newsletterSuccess: 'Application sent for newsletter.',
       genericError: 'Could not submit right now. Try again.',
       integrationMissing:
-        'Google Sheets integration is not configured yet. Add VITE_LEADS_ENDPOINT in your environment.',
-      wrongEndpoint:
-        'VITE_LEADS_ENDPOINT is invalid. Use your Apps Script Web App URL ending with /exec, not the sheet URL.',
-      endpointAuthError:
-        'Endpoint rejected the request. Check Apps Script deployment access and API key settings.',
-      endpointNetworkError:
-        'Could not reach the endpoint. Check internet access and ensure the endpoint URL is reachable.',
-      endpointInvalidResponse:
-        'Endpoint returned an unexpected response. Verify your Apps Script doPost handler and returned JSON.',
+        'Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in your environment.',
+      databaseError: 'Could not save your subscription. Please try again.',
     },
     disclaimer: 'No spam. Unsubscribe anytime.',
   },
