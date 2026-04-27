@@ -95,11 +95,42 @@ export default function Footer() {
           <p
             style={{
               fontSize: '12px',
-              margin: 0,
+              margin: '0 0 8px 0',
               color: 'var(--color-text-muted)',
             }}
           >
             {t.footer.rights}
+          </p>
+          <p
+            style={{
+              fontSize: '12px',
+              margin: 0,
+              color: 'var(--color-text-muted)',
+            }}
+          >
+            Developed by{' '}
+            <a
+              href="mailto:marcelinosamer000@gmail.com"
+              style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}
+            >
+              Marcelino Sedhum
+            </a>{' '}
+            |{' '}
+            <a
+              href="tel:+201271656130"
+              style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}
+            >
+              01271656130
+            </a>{' '}
+            |{' '}
+            <a
+              href="https://marcelinosamer.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--color-text-muted)', textDecoration: 'none' }}
+            >
+              Website
+            </a>
           </p>
         </div>
         </div>

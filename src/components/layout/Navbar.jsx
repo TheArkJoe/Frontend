@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, Globe, Menu, X, Instagram, MessageCircle, Youtube } from 'lucide-react';
+import { Sun, Moon, Globe, Menu, X, Instagram, MessageCircle, Youtube, Mail } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -197,6 +197,15 @@ export default function Navbar() {
             aria-label="YouTube"
           >
             <Youtube size={18} />
+          </a>
+          <a
+            href="mailto:joe@joeejoeyy.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ ...iconBtnStyle, textDecoration: 'none' }}
+            aria-label="Email"
+          >
+            <Mail size={18} />
           </a>
 
           {/* Theme Toggle */}
