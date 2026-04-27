@@ -68,7 +68,7 @@ export default function Footer() {
               { icon: Instagram, href: 'https://www.instagram.com/joee_joeyy?igsh=M2E0YXZ4dDVzY3Bv', label: 'Instagram' },
               { icon: MessageCircle, href: 'https://wa.me/201027909082', label: 'WhatsApp' },
               { icon: Youtube, href: 'https://youtube.com/@joeejoeyy?si=D8rxRXdY0U4r8GY2', label: 'YouTube' },
-              { icon: Mail, href: 'mailto:coach@example.com', label: 'Email' },
+              { icon: Mail, href: 'mailto:joe@joeejoeyy.com', label: 'Email' },
             ].map(({ icon: Icon, href, label }, i) => (
               <a
                 key={i}

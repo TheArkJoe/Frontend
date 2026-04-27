@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Star } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { createFeedbackSubmission } from '../services/leads/createFeedbackSubmission';
 
 export default function FeedbackForm() {
   const { t } = useLanguage();
@@ -21,13 +22,26 @@ export default function FeedbackForm() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const update = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.rating) return;
-    setSubmitted(true);
+    
+    setIsSubmitting(true);
+    setError(null);
+    try {
+      await createFeedbackSubmission(form);
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      setError('An error occurred while submitting your feedback. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputStyle = {
@@ -261,15 +275,22 @@ export default function FeedbackForm() {
                 {f.contactBack}
               </label>
 
+              {error && (
+                <div style={{ color: '#ef4444', fontSize: '14px', marginTop: '4px' }}>
+                  {error}
+                </div>
+              )}
+
               <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                whileHover={!isSubmitting ? { scale: 1.01 } : {}}
+                whileTap={!isSubmitting ? { scale: 0.99 } : {}}
                 type="submit"
+                disabled={isSubmitting}
                 style={{
                   marginTop: '8px',
                   width: '100%',
                   border: 'none',
-                  cursor: 'pointer',
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
                   borderRadius: '10px',
                   padding: '15px',
                   fontSize: '15px',
@@ -277,9 +298,10 @@ export default function FeedbackForm() {
                   color: '#fff',
                   background: 'var(--color-primary)',
                   fontFamily: 'inherit',
+                  opacity: isSubmitting ? 0.7 : 1,
                 }}
               >
-                {f.submit}
+                {isSubmitting ? 'Submitting...' : f.submit}
               </motion.button>
             </motion.form>
           ) : (
