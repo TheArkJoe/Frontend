@@ -181,7 +181,7 @@ export default function Navbar() {
             <Instagram size={18} />
           </a>
           <a
-            href="https://wa.me/201027909082"
+            href="https://wa.me/201131613760"
             target="_blank"
             rel="noopener noreferrer"
             style={{ ...iconBtnStyle, textDecoration: 'none' }}
