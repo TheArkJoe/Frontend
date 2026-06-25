@@ -77,7 +77,7 @@ const en = {
     label: 'PROGRAMS',
     title: 'Coaching Programs',
     mostPopular: 'Most Popular',
-    applyProgramOne: 'Apply for Program One',
+    applyProgramOne: 'Apply for Program',
     billing: {
       monthly: '1 Month',
       quarterly: '3 Months',
